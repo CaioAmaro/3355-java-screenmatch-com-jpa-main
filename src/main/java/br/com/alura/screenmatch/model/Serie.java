@@ -25,7 +25,7 @@ public class Serie {
     private Integer totalTemporadas;
     private Double avaliacao;
 
-    @Transient
+    @OneToMany (mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Episodio> episodios;
 
     public Serie(){}
@@ -40,8 +40,25 @@ public class Serie {
        this.avaliacao = Optional.of(Double.valueOf(dadosSerie.avaliacao())).orElse(0.0);
    }
 
+    public String getTitulo() {
+        return titulo;
+    }
+
     public Categoria getGenero() {
         return genero;
+    }
+
+    public Integer getTotalTemporadas() {
+        return totalTemporadas;
+    }
+
+    public Double getAvaliacao() {
+        return avaliacao;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e -> e.setSerie(this));
+        this.episodios = episodios;
     }
 
     @Override
@@ -52,6 +69,7 @@ public class Serie {
                 ", sinopse='" + sinopse + '\'' +
                 ", poster='" + poster + '\'' +
                 ", totalTemporadas=" + totalTemporadas +
-                ", avaliacao=" + avaliacao;
+                ", avaliacao=" + avaliacao +
+                ", Episodios = " + episodios;
     }
 }
